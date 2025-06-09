@@ -10,14 +10,14 @@ const DEFAULT_NAV_ITEMS = [
 
 const SidebarLogo = () => (
   <Link href="/" className="sidebar-logo">
-    <Image
+    <img
       src="/assets/icons/logo-full-brand.svg"
       alt="logo"
       width={160}
       height={50}
       className="hidden h-auto lg:block"
     />
-    <Image
+    <img
       src="/assets/icons/logo-brand.svg"
       alt="logo"
       width={160}
@@ -29,7 +29,7 @@ const SidebarLogo = () => (
 
 const NavItem = ({ item, isActive }) => (
   <li className={cn("sidebar-nav-item", isActive && "shad-active")}>
-    <Image
+    <img
       src={item.icon}
       alt={item.name}
       width={24}
@@ -55,7 +55,7 @@ const SidebarNav = ({ navItems, pathname }) => (
 
 const SidebarUserInfo = ({ user }) => (
   <div className="sidebar-user-info">
-    <Image
+    <img
       src={user.avatar || "/assets/images/userAvatar.png"}
       alt="avatar"
       width={44}
