@@ -1,6 +1,11 @@
+import { useState } from "react";
+
 import { FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import { Input } from "./ui/input";
 import { Checkbox } from "./ui/checkbox";
+import { Button } from "./ui/button";
+import { Select, SelectTrigger, SelectValue, SelectContent } from "./ui/select";
+import { Eye, EyeOff } from "lucide-react";
 
 const FormFieldType = {
   INPUT: "input",
@@ -13,28 +18,42 @@ const FormFieldType = {
 };
 // render all different kinds of field depending on the form field type
 const RenderField = ({ field, props }) => {
-  const { fieldType, iconSrc, iconAlt, placeholder } = props;
+  const { fieldType, IconComponent, iconAlt, placeholder, type } = props;
+  const [showPassword, setShowPassword] = useState(false);
 
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex rounded-md border">
-          {iconSrc && (
-            <img
-              src={iconSrc}
-              alt={iconAlt || "icon"}
+        <div className="flex items-center rounded-md border border-dark-700">
+          {IconComponent && (
+            <IconComponent
               height={24}
               width={24}
               className="ml-2"
+              color="#76828D"
             />
           )}
           <FormControl>
             <Input
               placeholder={placeholder}
+              type={showPassword ? "text" : type}
               {...field}
               className="shad-input border-0"
             />
           </FormControl>
+          {type === "password" && (
+            <Button
+              variant="ghost"
+              className="mr-2 focus:outline-none"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeOff size={20} color="#76828D" />
+              ) : (
+                <Eye size={20} color="#76828D" />
+              )}
+            </Button>
+          )}
         </div>
       );
     case FormFieldType.TEXTAREA:
@@ -42,7 +61,21 @@ const RenderField = ({ field, props }) => {
     case FormFieldType.PHONE_INPUT:
       return <div>Phone Input</div>;
     case FormFieldType.SELECT:
-      return <div>Select</div>;
+      return (
+        <FormControl>
+          <Select>
+            <FormControl>
+              <SelectTrigger className="shad-select-trigger">
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+            </FormControl>
+
+            <SelectContent className="shad-select-content">
+              {props.children}
+            </SelectContent>
+          </Select>
+        </FormControl>
+      );
     case FormFieldType.CHECKBOX:
       return (
         <FormControl>

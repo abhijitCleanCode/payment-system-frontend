@@ -1,17 +1,15 @@
 import React from "react";
-import { FormSignIn } from "@/components/login";
+import { FormAdminRegistration } from "@/components/adminRegistration";
 
-const Login = () => {
+const AdminRegistration = () => {
   return (
     <div className="flex h-screen max-h-screen">
       <section className="container my-auto">
         <div className="sub-container max-w-[496px]">
-          <FormSignIn />
+          <FormAdminRegistration />
 
           <div className="text-14-regular mt-20 flex justify-between">
-            <p className="justify-items-end text-dark-200 xl:text-left">
-              &#169; 2025 All Rights Reserved
-            </p>
+            <p className="justify-items-end text-dark-200 xl:text-left"></p>
           </div>
         </div>
       </section>
@@ -19,4 +17,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminRegistration;

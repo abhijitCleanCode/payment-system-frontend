@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { data, useLocation, useNavigate } from "react-router-dom";
 
 // form imports
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Key, Mail } from "lucide-react";
 // custom form components
 import { CustomFormField, SubmitButton } from "@/components";
+import { Key, Mail, UserRound } from "lucide-react";
+import { SelectItem } from "../ui/select";
 
-const loginSchema = yup.object({
+const adminRegistrationSchema = yup.object({
+  name: yup.string().required("Name is required"),
   email: yup.string().required("Email is required").email("Email is invalid"),
   password: yup
     .string()
@@ -29,67 +30,92 @@ const FormFieldType = {
   SKELETON: "skeleton",
 };
 
-const FormSignIn = () => {
+const FormAdminRegistration = () => {
   //! potential improvement, make it global
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isLoginPage = location.pathname === "/login";
-
   // define form
   const form = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(adminRegistrationSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  // verify on initial load
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(() => {})}
+        onSubmit={form.handleSubmit(onSubmit(data))}
         className="space-y-12 flex-1"
       >
         <section className="space-y-4">
-          <h1 className="header">Welcome</h1>
-          <p className="text-dark-200">Please sign in to continue</p>
+          <h1 className="header">Admin account set up</h1>
+          <p className="text-dark-200">
+            Ready to take control? Add admin details below
+          </p>
         </section>
 
         <CustomFormField
           control={form.control}
           fieldType={FormFieldType.INPUT}
+          name="name"
+          label="Name"
+          placeholder="Jhon Doe"
+          IconComponent={UserRound}
+        />
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldType.INPUT}
           name="email"
           label="Email"
-          placeholder="jhonndoe@email.com"
+          placeholder="jhondoe@email.com"
           IconComponent={Mail}
         />
-
         <CustomFormField
           control={form.control}
           fieldType={FormFieldType.INPUT}
           name="password"
           label="Password"
-          placeholder="Password"
+          placeholder="**********"
           type="password"
           IconComponent={Key}
         />
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldType.SELECT}
+          name="role"
+          label="Role"
+          placeholder="Assign role"
+        >
+          {["Admin"].map((role, index) => (
+            <SelectItem key={index} value={role}>
+              <div className="flex cursor-pointer items-center gap-2">
+                <p>{role}</p>
+              </div>
+            </SelectItem>
+          ))}
+        </CustomFormField>
 
         {/* <CustomFormField
           control={form.control}
           fieldType={FormFieldType.CHECKBOX}
-          name="forgotPassword?"
-          label="Forgot Password?"
+          name="isActive"
+          label="Active"
         /> */}
 
-        <SubmitButton>Get Started</SubmitButton>
+        <SubmitButton>Save</SubmitButton>
       </form>
     </Form>
   );
 };
 
-export default FormSignIn;
+export default FormAdminRegistration;
