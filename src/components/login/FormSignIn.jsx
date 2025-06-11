@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 // form imports
 import { Form } from "@/components/ui/form";
@@ -9,7 +9,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Key, Mail } from "lucide-react";
 // custom form components
-import { CustomFormField, SubmitButton } from "@/components";
+import {
+  CustomFormField,
+  LoaderButtonAction,
+  SubmitButton,
+} from "@/components";
+// api
+import { useLoginMutation } from "@/services/api/authApiSlice";
+import { setCredentials } from "@/services/state/authSlice";
 
 const loginSchema = yup.object({
   email: yup.string().required("Email is required").email("Email is invalid"),
@@ -30,11 +37,9 @@ const FormFieldType = {
 };
 
 const FormSignIn = () => {
-  //! potential improvement, make it global
-  const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const isLoginPage = location.pathname === "/login";
 
@@ -47,12 +52,38 @@ const FormSignIn = () => {
     },
   });
 
+  const [login, { isLoading, error }] = useLoginMutation();
+  const handleLogin = async function (data) {
+    try {
+      const response = await login(data).unwrap();
+
+      console.log(
+        "src :: components :: login :: FormSignIn :: handleLogin :: response: ",
+        response
+      );
+
+      if (response.success || response.statusCode === 200) {
+        dispatch(setCredentials({ ...response }));
+
+        form.reset();
+
+        // redirect
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(
+        "src :: components :: login :: FormSignIn :: handleLogin :: error: ",
+        error
+      );
+    }
+  };
+
   // verify on initial load
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(() => {})}
+        onSubmit={form.handleSubmit((data) => handleLogin(data))}
         className="space-y-12 flex-1"
       >
         <section className="space-y-4">
@@ -86,7 +117,13 @@ const FormSignIn = () => {
           label="Forgot Password?"
         /> */}
 
-        <SubmitButton>Get Started</SubmitButton>
+        <SubmitButton>
+          {isLoading ? (
+            <LoaderButtonAction className="opacity-100" />
+          ) : (
+            "Get Started"
+          )}
+        </SubmitButton>
       </form>
     </Form>
   );

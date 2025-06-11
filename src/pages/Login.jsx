@@ -1,7 +1,25 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { FormSignIn } from "@/components/login";
 
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentToken } from "@/services/state/authSlice";
+
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const token = useSelector(selectCurrentToken);
+
+  const isLoginPage = location.pathname === "/login";
+  const hasToken = !!token;
+
+  // verify on initial render
+  useEffect(() => {
+    if (isLoginPage && hasToken) {
+      navigate("/");
+    }
+  }, [isLoginPage, hasToken]);
+
   return (
     <div className="flex h-screen max-h-screen">
       <section className="container my-auto">

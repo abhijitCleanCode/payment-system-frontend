@@ -2,14 +2,14 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { useSidebar } from "@/hooks/useSidebar";
+import { useSidebar } from "@/components/ui/sidebar";
 
 const MenuItem = ({ item, level = 0 }) => {
-  const { isOpen } = useSidebar();
+  const { open } = useSidebar();
 
   const location = useLocation();
   const pathname = location.pathname;
-  const isActive = pathname === item.to || pathname.startsWith(`${item.href}/`);
+  const isActive = pathname === item.to || pathname.startsWith(`${item.to}/`);
 
   const baseStyles = cn(
     "flex items-center rounded-md text-sm font-medium transition-colors",
@@ -19,11 +19,11 @@ const MenuItem = ({ item, level = 0 }) => {
     isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground"
   );
 
-  // If it's a subheading
+  // subheading
   if (item.type === "subheading") {
     return (
       <div className="space-y-1">
-        {isOpen && (
+        {open && (
           <h3
             className={cn(
               "px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground",
@@ -42,7 +42,7 @@ const MenuItem = ({ item, level = 0 }) => {
   }
 
   // collapse state
-  if (!isOpen) {
+  if (!open) {
     return (
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>

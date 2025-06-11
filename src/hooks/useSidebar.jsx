@@ -1,3 +1,4 @@
+// currently not in use
 import { useState } from "react";
 
 export function useSidebar() {

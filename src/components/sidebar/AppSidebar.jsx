@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { FilePlus, Home, Key, UserPlus } from "lucide-react";
-import { useSidebar } from "@/hooks/useSidebar";
+import { useSidebar } from "@/components/ui/sidebar";
 import {
   Sidebar,
   SidebarContent,
@@ -18,28 +18,28 @@ const menuItems = [
     can_access: true,
   },
   {
-    id: "user-management", // New ID for the subheading
-    title: "User Management", // Subheading title
-    type: "subheading", // Add a type to identify it as a subheading
+    id: "user-management",
+    title: "User Management",
+    type: "subheading",
     children: [
       {
         id: "create-user",
         title: "Create User",
         icon: UserPlus,
-        to: "/create-user", // Changed to a real path for demonstration
+        to: "/create-user",
         can_access: true,
       },
       {
         id: "change-password",
         title: "Change Password",
         icon: Key,
-        to: "/change-password", // Changed to a real path for demonstration
+        to: "/change-password",
         can_access: true,
       },
     ],
   },
   {
-    id: "document-ops", // Another subheading
+    id: "document-ops",
     title: "Document Operations",
     type: "subheading",
     children: [
@@ -47,7 +47,7 @@ const menuItems = [
         id: "create-header",
         title: "Create Header",
         icon: FilePlus,
-        to: "/create-header", // Changed to a real path for demonstration
+        to: "/create-header",
         can_access: true,
       },
     ],
@@ -56,14 +56,18 @@ const menuItems = [
 
 // main container
 const AppSidebar = () => {
-  const { isOpen } = useSidebar();
+  const { open } = useSidebar();
 
   const location = useLocation();
   const pathname = location.pathname;
 
   return (
-    <Sidebar variant={isOpen ? "default" : "compact"} className="">
-      <SidebarHeader>Payment System</SidebarHeader>
+    <Sidebar
+      variant={open ? "floating" : "compact"}
+      className=""
+      collapsible="icon"
+    >
+      <SidebarHeader>{open ? "Payment System" : "PS"}</SidebarHeader>
       <SidebarContent className="ml-2">
         <nav className="space-y-1">
           {menuItems.map((item) => (
@@ -71,7 +75,7 @@ const AppSidebar = () => {
           ))}
         </nav>
       </SidebarContent>
-      <SidebarFooter>User Profile</SidebarFooter>
+      <SidebarFooter>{open ? "User Profile" : "UP"}</SidebarFooter>
     </Sidebar>
   );
 };

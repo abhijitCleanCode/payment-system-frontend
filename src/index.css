@@ -173,3 +173,61 @@
     @apply bg-white placeholder:text-dark-700 border-dark-200 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
   }
 }
+
+/* LOADER FOR BUTTON SAVE, UPDATE AND DELETE */
+.custom-loader {
+  width: 20px;
+  height: 10px;
+  --c: radial-gradient(farthest-side, #00f429 93%, #0000);
+  background: var(--c) 0 0, var(--c) 50% 0, var(--c) 100% 0;
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
+  position: relative;
+  animation: db4-0 0.5s linear infinite alternate;
+}
+.custom-loader:before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 6px;
+  background: #00f429;
+  left: 0;
+  top: 0;
+  animation: db4-1 0.5s linear infinite alternate,
+    db4-2 0.25s cubic-bezier(0, 200, 0.8, 200) infinite;
+}
+.react-datepicker-popper {
+  z-index: 2 !important;
+}
+@keyframes db4-0 {
+  0% {
+    background-position: 0 100%, 50% 0, 100% 0;
+  }
+  8%,
+  42% {
+    background-position: 0 0, 50% 0, 100% 0;
+  }
+  50% {
+    background-position: 0 0, 50% 100%, 100% 0;
+  }
+  58%,
+  92% {
+    background-position: 0 0, 50% 0, 100% 0;
+  }
+  100% {
+    background-position: 0 0, 50% 0, 100% 100%;
+  }
+}
+
+@keyframes db4-1 {
+  100% {
+    left: calc(100% - 4px);
+  }
+}
+
+@keyframes db4-2 {
+  100% {
+    top: -0.05px;
+  }
+}
+/* END LOADER FOR BUTTON */

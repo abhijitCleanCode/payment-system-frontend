@@ -1,3 +1,6 @@
+// not yet ready
+// purpose: used to render sidebar menu with unlimited nested level in menuItems array
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, ChevronRight } from "lucide-react";
